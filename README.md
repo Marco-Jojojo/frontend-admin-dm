@@ -5,7 +5,7 @@
 ####1. Clone this project or Download that ZIP file
 
 ```sh
-$ git clone https://github.com/start-angular/sb-admin-angular.git
+$ git clone https://github.com/Marco-Jojojo/frontend-admin-dm.git
 ```
 
 ####2.  Make sure you have [bower](http://bower.io/), [grunt-cli](https://www.npmjs.com/package/grunt-cli) and  [npm](https://www.npmjs.org/) installed globally
