@@ -48,10 +48,14 @@ sudo chown -R [user name] ~/.config
 ```
 
 
-## Roadmap
-
-- Add sample AJAX calls and make the directives more modular
-
 ### Automation tools
 
 - [Grunt](http://gruntjs.com/)
+
+### Fonts and icons
+
+- http://fontawesome.io/icons/
+
+### Grid sizes
+
+- https://getbootstrap.com/examples/grid/
