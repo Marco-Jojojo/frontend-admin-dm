@@ -17,7 +17,8 @@ angular.module('sbAdminApp')
         'comments': '@',
         'name': '@',
         'colour': '@',
-        'type':'@'
+        'type':'@',
+        'page':'@'
   		}
   		
   	}

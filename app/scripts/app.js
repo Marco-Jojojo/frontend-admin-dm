@@ -7,8 +7,8 @@ angular
     'ui.bootstrap',
     'angular-loading-bar',
   ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
-    
+  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider','$qProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
@@ -26,6 +26,7 @@ angular
                 {
                     name:'sbAdminApp',
                     files:[
+                    'scripts/controllers/main.js',
                     'scripts/directives/header/header.js',
                     'scripts/directives/header/header-notification/header-notification.js'
                     ]
@@ -74,8 +75,25 @@ angular
             return $ocLazyLoad.load({
               name:'sbAdminApp',
               files:[
-              'scripts/controllers/main.js',
               'scripts/directives/dashboard/stats/stats.js'
+              ]
+            })
+          }
+        }
+    })
+    .state('dashboard.admin',{
+        url:'/admin',
+        controller: 'AdminCtrl',
+        templateUrl:'views/dashboard/admin.html',
+        resolve: {
+          loadMyFiles:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name:'sbAdminApp',
+              files:[
+                'scripts/controllers/admin.js',
+                'scripts/controllers/room.js',
+                'scripts/controllers/user.js',
+                'scripts/controllers/customer.js'
               ]
             })
           }

@@ -87,5 +87,10 @@ background-color: #eee;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
   height: 50%;
-  width: 50%;
+  width: 60%;
+}
+
+.options{
+  height: 150%;
+  width: 150%;
 }

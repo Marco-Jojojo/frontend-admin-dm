@@ -1,14 +1,16 @@
 <div class="col-lg-4 col-md-6">
-    <div class="panel panel-{{colour}}">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-3">
-                    <i class="fa fa-{{type}} fa-5x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                    <div>{{comments}}</div>
+    <a ui-sref="{{page}}">
+        <div class="panel panel-{{colour}}">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-{{type}} fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div>{{comments}}</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>

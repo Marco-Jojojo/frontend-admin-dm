@@ -1,6 +1,6 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="MainCtrl">
     <div class="navbar-header">
-        <div class="navbar-brand">Bienvenido {{name}} {{lastName}}</div>
+        <a ui-sref="dashboard.home"><div class="navbar-brand">Bienvenido <b>{{name}}</b></div></a>
     </div>
     <!-- /.navbar-header -->
     <header-notification></header-notification>
