@@ -6,6 +6,7 @@ angular
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
+    'datatables'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider','$qProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
@@ -13,7 +14,7 @@ angular
       debug:false,
       events:true,
     });
-
+    
     $urlRouterProvider.otherwise('/dashboard/home');
 
     $stateProvider

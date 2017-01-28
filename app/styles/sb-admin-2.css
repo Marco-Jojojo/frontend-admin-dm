@@ -104,6 +104,11 @@ body {
     color: #d9534f;
 }
 
+.btn-pull-right {
+    float: right !important;
+    line-height: 1;
+}
+
 .btn-primary.btn-outline:hover,
 .btn-success.btn-outline:hover,
 .btn-info.btn-outline:hover,
@@ -243,4 +248,14 @@ table.dataTable thead .sorting:after {
 
 .panel-yellow a:hover {
     color: #df8a13;
+}
+
+/**Datatables**/
+table.dataTable thead th {
+    background-color: #e3e3e3 !important;
+}
+
+/**Modal**/
+.modal {
+    bottom: inherit;
 }
