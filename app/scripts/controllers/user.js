@@ -1,59 +1,84 @@
 'use strict';
 
 angular.module('sbAdminApp')
-  .controller('UserCtrl', ['$scope','$log', '$compile', 'DTOptionsBuilder', 'DTColumnBuilder', '$q', '$http', function($scope, $log, $compile, DTOptionsBuilder, DTColumnBuilder, $q, $http) {
-
+  .controller('UserCtrl', ['$scope', '$compile', '$log', 'DTOptionsBuilder', 'DTColumnBuilder', '$q', '$http', function($scope, $compile, $log, DTOptionsBuilder, DTColumnBuilder, $q, $http) {
 	var vm = this;
-    vm.message = '';
-    vm.edit = edit;
-    vm.delete = deleteRow;
-    vm.dtInstance = {};
-    vm.persons = {};
 
-    vm.dtOptions = DTOptionsBuilder.fromFnPromise(getData())
-    	.withPaginationType('full_numbers')
-        .withOption('createdRow', createdRow);
+	angular.element('#userForm').on('shown.bs.modal', function () {
+		angular.element('#username').focus();
+	});
+	angular.element('.modal-content').keypress(function(e){
+		if(e.which == 13) { //Enter key
+	  		vm.create();
+			angular.element('#userForm').modal('hide');
+		}
+	});
+
+    vm.dtInstance = {};
+    vm.users = {};
+    vm.fromEdit = false;
+
+    vm.dtOptions = DTOptionsBuilder.fromFnPromise(getData()).withPaginationType('full_numbers').withOption('createdRow', refresh);
+
     vm.dtColumns = [
         DTColumnBuilder.newColumn('nombre').withTitle('Nombre'),
         DTColumnBuilder.newColumn('departamento').withTitle('Departamento'),
         DTColumnBuilder.newColumn('telefono').withTitle('Teléfono'),
         DTColumnBuilder.newColumn('email').withTitle('E-mail'),
         DTColumnBuilder.newColumn('domicilio').withTitle('Domicilio'),
-        DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable()
-            .renderWith(actionsHtml)
+        DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable().renderWith(actionsHtml)
     ];
 
-    function edit(person) {
-        vm.message = 'You are trying to edit the row: ' + JSON.stringify(person);
-        // Edit some data and call server to make changes...
-        // Then reload the data so that DT is refreshed
-        vm.dtInstance.reloadData();
+    vm.edit = function(user) {
+    	vm.user = user;
+		angular.element('#userForm').modal('show');
+		vm.fromEdit = true;
+        vm.dtInstance.rerender();
     }
-    function deleteRow(person) {
-        vm.message = 'You are trying to remove the row: ' + JSON.stringify(person);
-        // Delete some data and call server to make changes...
-        // Then reload the data so that DT is refreshed
-        vm.dtInstance.reloadData();
+
+    vm.delete = function(user) {
+        $log.info(user);
     }
-    function createdRow(row, data, dataIndex) {
-        // Recompiling so we can bind Angular directive to the DT
+
+    function refresh(row, data, dataIndex) {
         $compile(angular.element(row).contents())($scope);
     }
 
-    vm.create = function createNew(user) {
-    	alert(user);
-    	vm.user = user;
-    	vm.dataJson.push(vm.user);
-    	//TODO: Refresh the DataTable with the new user.
+    vm.clean = function() {
+        vm.user.nombre = '';
+    	vm.user.departamento = '';
+    	vm.user.domicilio = '';
+    	vm.user.telefono = '';
+    	vm.user.email = '';
+    	vm.fromEdit = false;
+    }
+
+    vm.create = function() {
+    	$log.info(vm.user);
+    	var id = 0;
+    	if(vm.fromEdit) {
+    		id = vm.user.id;
+    	} else {
+    		id = vm.dataJson.length;
+    	}
+    	vm.dataJson.push({
+				"id": id,
+			    "nombre": vm.user.nombre,
+			    "departamento": vm.user.departamento,
+			    "telefono": vm.user.telefono,
+			    "email": vm.user.email,
+			    "domicilio": vm.user.domicilio
+			});
     	$log.info(vm.dataJson);
+    	vm.dtInstance._renderer.rerender();
     }
 
     function actionsHtml(data, type, full, meta) {
-        vm.persons[data.id] = data;
-        return 	'<div class="text-center"><button class="btn btn-info" ng-click="userCtrl.edit(userCtrl.persons[' + data.id + '])">' +
+        vm.users[data.id] = data;
+        return 	'<div class="text-center"><button class="btn btn-info" ng-click="userCtrl.edit(userCtrl.users[' + data.id + '])">' +
 	            '   <i class="fa fa-edit"></i>' +
 	            '</button>&nbsp;' +
-	            '<button class="btn btn-danger" ng-click="userCtrl.delete(userCtrl.persons[' + data.id + '])" )"="">' +
+	            '<button class="btn btn-danger" ng-click="userCtrl.delete(userCtrl.users[' + data.id + '])">' +
 	            '   <i class="fa fa-trash-o"></i>' +
 	            '</button></div>';
     }
@@ -66,7 +91,7 @@ angular.module('sbAdminApp')
         */
         vm.dataJson = [
 	    	{
-	    		"id": "1",
+	    		"id": 0,
 			    "nombre": "Marco Alvarado",
 			    "departamento": "Sistemas",
 			    "telefono": "492 492 3155",
@@ -74,7 +99,7 @@ angular.module('sbAdminApp')
 			    "domicilio": "Del Ángel #3"
 			}, 
 			{
-				"id": "2",
+				"id": 1,
 			    "nombre": "Luis Fernando",
 			    "departamento": "Sistemas",
 			    "telefono": "449 222 1618",
@@ -82,7 +107,7 @@ angular.module('sbAdminApp')
 			    "domicilio": "Calle del King #100"
 			}, 
 			{
-				"id": "3",
+				"id": 2,
 			    "nombre": "Laura Ruelas",
 			    "departamento": "Cobranza",
 			    "telefono": "492 123 4567",
@@ -90,7 +115,7 @@ angular.module('sbAdminApp')
 			    "domicilio": "Calle don Miguel #222"
 			}, 
 			{
-				"id": "4",
+				"id": 3,
 			    "nombre": "Marco Alvarado",
 			    "departamento": "Sistemas",
 			    "telefono": "492 492 3155",
@@ -98,7 +123,7 @@ angular.module('sbAdminApp')
 			    "domicilio": "Del Ángel #3"
 			}, 
 			{
-				"id": "5",
+				"id": 4,
 			    "nombre": "Luis Fernando",
 			    "departamento": "Sistemas",
 			    "telefono": "449 222 1618",
@@ -106,7 +131,7 @@ angular.module('sbAdminApp')
 			    "domicilio": "Calle del King #100"
 			}, 
 			{
-				"id": "6",
+				"id": 5,
 			    "nombre": "Laura Ruelas",
 			    "departamento": "Cobranza",
 			    "telefono": "492 123 4567",
